@@ -1,11 +1,28 @@
 
+    const mobileMenu = document.getElementById('mobile-menu');
+    const openMenuBtn = document.getElementById('open-menu');
+    const closeMenuBtn = document.getElementById('close-menu');
     
-document.addEventListener('DOMContentLoaded', function() {
-  
+    openMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    closeMenuBtn.addEventListener('click', () => {
+      closeMobileMenu();
+    });
+    
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+   
+    document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('theme-toggle');
       const html = document.documentElement;
       
-       const savedTheme = localStorage.getItem('theme');
+      const savedTheme = localStorage.getItem('theme');
       const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       
       if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
@@ -20,18 +37,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
- 
+    
     const header = document.getElementById('header');
     window.addEventListener('scroll', function() {
       if (window.scrollY > 20) {
-        header.classList.add('glass', 'shadow-lg');
-        header.classList.remove('bg-transparent');
+        header.classList.add('glass');
+        header.style.boxShadow = '0 4px 20px hsla(340, 85%, 60%, 0.1)';
       } else {
-        header.classList.remove('glass', 'shadow-lg');
-        header.classList.add('bg-transparent');
+        header.classList.remove('glass');
+        header.style.boxShadow = 'none';
       }
     });
- 
+    
+    
     const scrollProgress = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
       const scrollTop = window.scrollY;
@@ -40,17 +58,17 @@ document.addEventListener('DOMContentLoaded', function() {
       scrollProgress.style.width = `${progress}%`;
     });
     
-  // btt btn 
+    
     const backToTop = document.getElementById('back-to-top');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 500) {
+      if (window.scrollY > 400) {
         backToTop.classList.add('visible');
       } else {
         backToTop.classList.remove('visible');
       }
     });
     
-
+    
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
     
     const revealOnScroll = () => {
@@ -58,16 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const elementTop = el.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
         
-        if (elementTop < windowHeight - 100) {
+        if (elementTop < windowHeight - 80) {
           el.classList.add('active');
         }
       });
     };
     
-
     revealOnScroll();
     
-  
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -79,29 +95,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
- 
-    document.querySelectorAll('.product-card button').forEach(btn => {
-      if (btn.querySelector('svg path[d*="4.318"]')) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          const svg = this.querySelector('svg');
-          if (this.classList.contains('liked')) {
-            this.classList.remove('liked');
-            this.style.background = '';
-            this.style.color = '';
-            svg.querySelector('path').setAttribute('fill', 'none');
-          } else {
-            this.classList.add('liked');
-            this.style.background = 'hsl(var(--accent))';
-            this.style.color = 'white';
-            svg.querySelector('path').setAttribute('fill', 'currentColor');
-          }
-        });
-      }
+    
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.classList.toggle('liked');
+        const svg = this.querySelector('svg path');
+        if (this.classList.contains('liked')) {
+          svg.setAttribute('fill', 'currentColor');
+        } else {
+          svg.setAttribute('fill', 'none');
+        }
+      });
     });
     
     
-    window.addEventListener('scroll', () => {
-      document.documentElement.style.setProperty('--scroll', window.scrollY);
-    });
-
+    
